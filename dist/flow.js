@@ -868,7 +868,7 @@
     fireUploadStart: function() {
       if (!this.started) {
         this.started = true;
-        this.flowObj.fire('fileUploadStart', [this]);
+        this.flowObj.fire('fileUploadStart', this);
       }
     },
 
