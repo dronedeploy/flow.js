@@ -737,6 +737,12 @@
     this.error = false;
 
     /**
+     * Indicates if file has started uploading
+     * @type {boolean}
+     */
+    this.started = false;
+
+    /**
      * Average upload speed
      * @type {number}
      */
@@ -844,6 +850,17 @@
     pause: function() {
       this.paused = true;
       this.abort();
+    },
+
+    /**
+     * Pause file upload
+     * @function
+     */
+    fireUploadStart: function() {
+      if (!this.started) {
+        this.started = true;
+        this.flowObj.fire('fileUploadStart', this);
+      }
     },
 
     /**
@@ -1297,6 +1314,7 @@
 
       var uploadMethod = evalOpts(this.flowObj.opts.uploadMethod, this.fileObj, this);
       var data = this.prepareXhrRequest(uploadMethod, false, this.flowObj.opts.method, bytes);
+      this.fileObj.fireUploadStart();
       this.xhr.send(data);
     },
 
