@@ -97,7 +97,7 @@
       initFileFn: null,
       readFileFn: webAPIFileRead
     };
-    
+
     /**
      * Current options
      * @type {Object}
@@ -699,7 +699,7 @@
      * @type {Flow}
      */
     this.flowObj = flowObj;
-    
+
     /**
      * Used to store the bytes read
      * @type {Blob|string}
@@ -753,6 +753,12 @@
      * @type {boolean}
      */
     this.error = false;
+
+    /**
+     * Indicates if file has started uploading
+     * @type {boolean}
+     */
+    this.started = false;
 
     /**
      * Average upload speed
@@ -852,6 +858,17 @@
         case 'retry':
           this.flowObj.fire('fileRetry', this, chunk);
           break;
+      }
+    },
+
+    /**
+     * Fire uploadStart if this is first chunk for this file
+     * @function
+     */
+    fireUploadStart: function() {
+      if (!this.started) {
+        this.started = true;
+        this.flowObj.fire('fileUploadStart', [this]);
       }
     },
 
@@ -1350,6 +1367,7 @@
 
       var uploadMethod = evalOpts(this.flowObj.opts.uploadMethod, this.fileObj, this);
       var data = this.prepareXhrRequest(uploadMethod, false, this.flowObj.opts.method, this.bytes);
+      this.fileObj.fireUploadStart();
       this.xhr.send(data);
     },
 
