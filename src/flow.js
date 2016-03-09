@@ -1388,6 +1388,7 @@
       var xhr = this.xhr;
       this.xhr = null;
       if (xhr) {
+        xhr.onreadystatechange = function() {};
         xhr.abort();
       }
     },
