@@ -1306,7 +1306,6 @@
       this.xhr.addEventListener("error", this.testHandler, false);
       var testMethod = evalOpts(this.flowObj.opts.testMethod, this.fileObj, this);
       var data = this.prepareXhrRequest(testMethod, true);
-      this.fileObj.fireUploadStart();
       this.xhr.send(data);
     },
 
@@ -1376,6 +1375,7 @@
 
       var uploadMethod = evalOpts(this.flowObj.opts.uploadMethod, this.fileObj, this);
       var data = this.prepareXhrRequest(uploadMethod, false, this.flowObj.opts.method, this.bytes);
+      this.fileObj.fireUploadStart();
       this.xhr.send(data);
     },
 
